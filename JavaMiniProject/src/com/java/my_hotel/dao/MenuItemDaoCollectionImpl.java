@@ -1,29 +1,59 @@
 package com.java.my_hotel.dao;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 import com.java.my_hotel.model.MenuItem;
 
 public class MenuItemDaoCollectionImpl implements MenuItemDao {
-	private List<MenuItem> menuItemList;
+	private ArrayList<MenuItem> menuItemList;
 	
-	public List<MenuItem> getMenuItemListAdmin() {
-		List<MenuItem> l;
+	public MenuItemDaoCollectionImpl() {
+		super();
 		
-		return l;
+		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
+		
+		for(MenuItem m : menuItemList) {
+			this.menuItemList.add(m);
+		}
+	}
+
+	public ArrayList<MenuItem> getMenuItemListAdmin() {		
+		return this.menuItemList;
 	}
 	
-	public List<MenuItem> getMenuItemListCustomer() {
-		List<MenuItem> l;
+	public ArrayList<MenuItem> getMenuItemListCustomer() {
+		ArrayList<MenuItem> mil = new ArrayList<MenuItem>();
+		Date d = new Date(System.currentTimeMillis());
 		
-		return l;
+		for(MenuItem m : this.menuItemList) {
+			if(d.after(m.getDateOfLaunch())  && m.isActive()) {
+				mil.add(m);
+			}
+		}
+		
+		return mil;
 	}
 	
 	public void modifyMenuItem(MenuItem menuItem) {
-		
+		for(MenuItem m : this.menuItemList) {
+			if(m.getId() == menuItem.getId()) {
+				m.setName(menuItem.getName());
+				m.setPrice(menuItem.getPrice());
+				m.setActive(menuItem.isActive());
+				m.setCategory(menuItem.getCategory());
+				m.setDateOfLaunch(menuItem.getDateOfLaunch());
+				m.setFreeDelivery(menuItem.isFreeDelivery());
+				break;
+			}
+		}
 	}
 	
 	public MenuItem getMenuItem(long menuItemId) {
-		MenuItem m;
+		for(MenuItem m : this.menuItemList) {
+			if(m.getId() == menuItemId) {
+				return m;
+			}
+		}
 		
-		return m;
+		return null;
 	}
 }

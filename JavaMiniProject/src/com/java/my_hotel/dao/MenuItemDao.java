@@ -1,10 +1,10 @@
 package com.java.my_hotel.dao;
-import java.util.List;
+import java.util.ArrayList;
 import com.java.my_hotel.model.MenuItem;
 
 public interface MenuItemDao {
-	public List<MenuItem> getMenuItemListAdmin();
-	public List<MenuItem> getMenuItemListCustomer();
+	public ArrayList<MenuItem> getMenuItemListAdmin();
+	public ArrayList<MenuItem> getMenuItemListCustomer();
 	public void modifyMenuItem(MenuItem menuItem);
 	public MenuItem getMenuItem(long menuItemId);
 }
