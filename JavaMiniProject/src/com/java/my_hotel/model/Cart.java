@@ -1,4 +1,4 @@
-package com.java.my_hotel.model;
+	package com.java.my_hotel.model;
 
 import java.util.ArrayList;
 import java.util.Objects;
