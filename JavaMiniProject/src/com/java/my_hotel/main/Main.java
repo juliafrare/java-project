@@ -9,20 +9,30 @@ import com.java.my_hotel.util.DateUtil;
 public class Main {
 
 	public static void main(String[] args) {
-		int implementation = Integer.valueOf(args[0]); // 0 for collections, 1 for sql
 		
-		CartDao cartDao;
-		MenuItemDao menuItemDao;
-		
-		if(implementation == 0) {
-			cartDao = new CartDaoCollectionImpl();
-			menuItemDao = new MenuItemDaoCollectionImpl();
-			test(cartDao, menuItemDao);
+		try {
+			int implementation = Integer.valueOf(args[0]); // 0 for collections, 1 for sql
+			
+			CartDao cartDao;
+			MenuItemDao menuItemDao;
+			
+			if(implementation == 0) {
+				cartDao = new CartDaoCollectionImpl();
+				menuItemDao = new MenuItemDaoCollectionImpl();
+				test(cartDao, menuItemDao);
+			}
+			else if(implementation == 1) {
+				cartDao = new CartDaoSqlImpl();
+				menuItemDao = new MenuItemDaoSqlImpl();
+				test(cartDao, menuItemDao);
+			}
+			else {
+				System.out.println("Argument needs to be 0 or 1.");
+			}
 		}
-		else if(implementation == 1) {
-			cartDao = new CartDaoSqlImpl();
-			menuItemDao = new MenuItemDaoSqlImpl();
-			test(cartDao, menuItemDao);
+		catch(IndexOutOfBoundsException e) {
+			System.out.println("Argument needs to be 0 or 1");
+			e.printStackTrace();
 		}
 
 	}
