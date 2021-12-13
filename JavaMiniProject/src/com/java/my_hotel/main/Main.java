@@ -45,6 +45,7 @@ public class Main {
 		try {
 			menuItemDao.modifyMenuItem(new MenuItem(6, "Cookies", (float) 7.00, true, DateUtil.convertToDate("13/12/2021"), 
 					"Food", false));
+			System.out.println("modifyMenuItem(6)");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -61,6 +62,7 @@ public class Main {
 		}
 		
 		cartDao.removeCartItem(0);
+		System.out.println("removeCartItem(0).");
 		try {
 			System.out.println("Cart ID #0: " + cartDao.getAllCartItems(0));
 		} catch (CartEmptyException e) {
