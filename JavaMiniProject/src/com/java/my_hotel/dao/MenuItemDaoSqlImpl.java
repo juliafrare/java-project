@@ -5,14 +5,16 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.java.my_hotel.model.MenuItem;
+import com.java.my_hotel.util.DateUtil;
 
 public class MenuItemDaoSqlImpl implements MenuItemDao {
 	
 	public ArrayList<MenuItem> getMenuItemListAdmin() {
-		String query = "SELECT * FROM menu_item WHERE (dateOfLaunch < now() AND active = true)";
+		String query = "SELECT * FROM menu_item";
 		PreparedStatement ps = null;
 		Connection conn = null;
 		
@@ -49,7 +51,7 @@ public class MenuItemDaoSqlImpl implements MenuItemDao {
 	}
 	
 	public ArrayList<MenuItem> getMenuItemListCustomer() {
-		String query = "SELECT * FROM menu_item";
+		String query = "SELECT * FROM menu_item WHERE dateOfLaunch < now() AND active = true";
 		PreparedStatement ps = null;
 		Connection conn = null;
 		
@@ -59,7 +61,6 @@ public class MenuItemDaoSqlImpl implements MenuItemDao {
 		try {
 			conn = ConnectionHandler.getConnection();
 			
-			System.out.println("Database connected!");
 			ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
@@ -87,8 +88,8 @@ public class MenuItemDaoSqlImpl implements MenuItemDao {
 	}
 	
 	public void modifyMenuItem(MenuItem menuItem) {
-		String query = "UPDATE menu_item SET (name=?, price=?, active=?, dateOfLaunch=?, "
-				+ "category=?, freeDelivery=?) WHERE id = ?";
+		String query = "UPDATE menu_item SET name=?, price=?, active=?, dateOfLaunch=?, "
+				+ "category=?, freeDelivery=? WHERE id = ?";
 		PreparedStatement ps = null;
 		Connection conn = null;
 		
@@ -130,9 +131,7 @@ public class MenuItemDaoSqlImpl implements MenuItemDao {
 		try {
 			conn = ConnectionHandler.getConnection();
 			
-			System.out.println("Database connected!");
 			ps = conn.prepareStatement(query);
-			
 			ps.setLong(1, menuItemId);
 			ResultSet rs = ps.executeQuery();
 			

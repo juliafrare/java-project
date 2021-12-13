@@ -16,7 +16,6 @@ public class CartDaoSqlImpl implements CartDao {
 		try {
 			conn = ConnectionHandler.getConnection();
 			
-			System.out.println("Database connected!");
 			ps = conn.prepareStatement(query);
 			
 			ps.setLong(1, userId);
@@ -38,9 +37,12 @@ public class CartDaoSqlImpl implements CartDao {
 	}
 	
 	public Cart getAllCartItems(long userId) throws CartEmptyException {
-		String query = "SELECT itemId FROM cart_items i WHERE i.userId = ? "
-				+ "LEFT JOIN menu_item m ON i.itemId = m.id "
-				+ "LEFT JOIN cart c ON i.cartId = c.id";
+		String query = "SELECT cart_items.cartId, menu_item.name, menu_item.price, menu_item.active," + 
+				"menu_item.dateOfLaunch, menu_item.category, menu_item.freeDelivery " + 
+				"FROM cart_items " + 
+				"INNER JOIN menu_item ON cart_items.itemId = menu_item.id " + 
+				"INNER JOIN cart ON cart_items.cartId = cart.id " + 
+				"WHERE cart_items.cartId = ?";
 		PreparedStatement ps = null;
 		Connection conn = null;
 		
@@ -51,7 +53,6 @@ public class CartDaoSqlImpl implements CartDao {
 		try {
 			conn = ConnectionHandler.getConnection();
 			
-			System.out.println("Database connected!");
 			ps = conn.prepareStatement(query);
 			
 			ps.setLong(1, userId);
@@ -65,7 +66,11 @@ public class CartDaoSqlImpl implements CartDao {
 			}
 			
 			c.setMenuItemList(cartItems);
-			c.setTotal(rs.getDouble(8));
+			
+			for(MenuItem m : cartItems) {
+				total += m.getPrice();
+				c.setTotal(total);
+			}			
 			
 		} catch (SQLException e) {
 		    throw new IllegalStateException("Cannot connect the database!", e);
@@ -91,7 +96,6 @@ public class CartDaoSqlImpl implements CartDao {
 		try {
 			conn = ConnectionHandler.getConnection();
 			
-			System.out.println("Database connected!");
 			ps = conn.prepareStatement(query);
 			
 			ps.setLong(1, userId);

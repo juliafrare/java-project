@@ -14,7 +14,6 @@ public class MenuItem {
 	
 	public MenuItem(long id, String name, float price, boolean active, Date dateOfLaunch, String category,
 			boolean freeDelivery) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;

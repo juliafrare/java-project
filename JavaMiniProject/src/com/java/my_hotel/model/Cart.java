@@ -1,23 +1,22 @@
 	package com.java.my_hotel.model;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Cart {
-	private ArrayList<MenuItem> menuItemList;
+	private List<MenuItem> menuItemList;
 	private double total;
 	
-	public Cart(ArrayList<MenuItem> menuItemList, double total) {
-		super();
+	public Cart(List<MenuItem> menuItemList, double total) {
 		this.menuItemList = menuItemList;
 		this.total = total;
 	}
 
-	public ArrayList<MenuItem> getMenuItemList() {
+	public List<MenuItem> getMenuItemList() {
 		return menuItemList;
 	}
 
-	public void setMenuItemList(ArrayList<MenuItem> menuItemList) {
+	public void setMenuItemList(List<MenuItem> menuItemList) {
 		this.menuItemList = menuItemList;
 	}
 
