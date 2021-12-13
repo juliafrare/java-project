@@ -9,7 +9,7 @@ import com.java.my_hotel.util.DateUtil;
 public class Main {
 
 	public static void main(String[] args) {
-		int implementation = 0; // 0 for collections, 1 for sql
+		int implementation = Integer.valueOf(args[0]); // 0 for collections, 1 for sql
 		
 		CartDao cartDao;
 		MenuItemDao menuItemDao;
