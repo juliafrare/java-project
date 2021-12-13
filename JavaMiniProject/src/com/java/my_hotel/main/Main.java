@@ -9,59 +9,52 @@ import com.java.my_hotel.util.DateUtil;
 public class Main {
 
 	public static void main(String[] args) {
-		// Collections Implementation
-		System.out.println("Collections Implementation");
+		int implementation = 0; // 0 for collections, 1 for sql
 		
-		CartDao cartDaoC = new CartDaoCollectionImpl();
-		MenuItemDao menuItemDaoC = new MenuItemDaoCollectionImpl();
+		CartDao cartDao;
+		MenuItemDao menuItemDao;
 		
-		System.out.println("menuItemListAdmin: " + menuItemDaoC.getMenuItemListAdmin());
-		System.out.println("menuItemListCustomer: " + menuItemDaoC.getMenuItemListCustomer());
-		System.out.println("getMenuItem #6: " + menuItemDaoC.getMenuItem(6));
-		
-		for(int i = 0; i < 3; i++) {
-			try {
-				System.out.println("Cart ID #" + i + ": " + cartDaoC.getAllCartItems(i));
-			} catch (CartEmptyException e) {
-				e.printStackTrace();
-			}
+		if(implementation == 0) {
+			cartDao = new CartDaoCollectionImpl();
+			menuItemDao = new MenuItemDaoCollectionImpl();
+			test(cartDao, menuItemDao);
 		}
-		
-		// SQL Implementation
-		System.out.println("SQL Implementation");
-		
-		CartDao cartDaoS = new CartDaoSqlImpl();
-		MenuItemDao menuItemDaoS = new MenuItemDaoSqlImpl();
-		
-		System.out.println("menuItemListAdmin: " + menuItemDaoS.getMenuItemListAdmin());
-		System.out.println("menuItemListCustomer: " + menuItemDaoS.getMenuItemListCustomer());
-		System.out.println("getMenuItem #6: " + menuItemDaoS.getMenuItem(6));
+		else if(implementation == 1) {
+			cartDao = new CartDaoSqlImpl();
+			menuItemDao = new MenuItemDaoSqlImpl();
+			test(cartDao, menuItemDao);
+		}
+
+	}
+
+	public static void test(CartDao cartDao, MenuItemDao menuItemDao) {
+		System.out.println("menuItemListAdmin: " + menuItemDao.getMenuItemListAdmin());
+		System.out.println("menuItemListCustomer: " + menuItemDao.getMenuItemListCustomer());
+		System.out.println("getMenuItem #6: " + menuItemDao.getMenuItem(6));
 		
 		try {
-			menuItemDaoS.modifyMenuItem(new MenuItem(6, "Cookies", (float) 7.00, true, DateUtil.convertToDate("13/12/2021"), 
+			menuItemDao.modifyMenuItem(new MenuItem(6, "Cookies", (float) 7.00, true, DateUtil.convertToDate("13/12/2021"), 
 					"Food", false));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println("getMenuItem #6: " + menuItemDaoS.getMenuItem(6));
+		System.out.println("getMenuItem #6: " + menuItemDao.getMenuItem(6));
 		
 		
 		for(int i = 0; i < 3; i++) {
 			try {
-				System.out.println("Cart ID #" + i + ": " + cartDaoS.getAllCartItems(i));
+				System.out.println("Cart ID #" + i + ": " + cartDao.getAllCartItems(i));
 			} catch (CartEmptyException e) {
 				e.printStackTrace();
 			}
 		}
 		
-		cartDaoS.removeCartItem(0);
+		cartDao.removeCartItem(0);
 		try {
-			System.out.println("Cart ID #0: " + cartDaoS.getAllCartItems(0));
+			System.out.println("Cart ID #0: " + cartDao.getAllCartItems(0));
 		} catch (CartEmptyException e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }

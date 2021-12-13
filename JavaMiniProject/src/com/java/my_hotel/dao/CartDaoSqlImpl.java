@@ -65,6 +65,10 @@ public class CartDaoSqlImpl implements CartDao {
 				cartItems.add(m);
 			}
 			
+			if(cartItems.isEmpty()) {
+				throw new CartEmptyException("This cart is empty!");				
+			}
+			
 			c.setMenuItemList(cartItems);
 			
 			for(MenuItem m : cartItems) {

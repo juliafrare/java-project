@@ -1,8 +1,10 @@
 package com.java.my_hotel.dao;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.java.my_hotel.model.Cart;
 import com.java.my_hotel.model.MenuItem;
@@ -14,12 +16,23 @@ public class CartDaoCollectionImpl implements CartDao {
 		MenuItemDao menuItemDao = new MenuItemDaoCollectionImpl();
 		HashMap<Long, Cart> userCarts = new HashMap<Long, Cart>();
 		
-		userCarts.put((long) 0, new Cart(Arrays.asList(menuItemDao.getMenuItem(0),
-				menuItemDao.getMenuItem(1), menuItemDao.getMenuItem(2)), 8.00));
-		userCarts.put((long) 1, new Cart(Arrays.asList(menuItemDao.getMenuItem(0),
-				menuItemDao.getMenuItem(3)), 9.50));
-		userCarts.put((long) 2, new Cart(Arrays.asList(menuItemDao.getMenuItem(1),
-				menuItemDao.getMenuItem(2), menuItemDao.getMenuItem(4)), 16.50));
+		ArrayList<MenuItem> al1 = new ArrayList<MenuItem>();
+		al1.add(menuItemDao.getMenuItem(0));
+		al1.add(menuItemDao.getMenuItem(1));
+		al1.add(menuItemDao.getMenuItem(2));
+		
+		ArrayList<MenuItem> al2 = new ArrayList<MenuItem>();
+		al2.add(menuItemDao.getMenuItem(0));
+		al2.add(menuItemDao.getMenuItem(3));
+		
+		ArrayList<MenuItem> al3 = new ArrayList<MenuItem>();
+		al3.add(menuItemDao.getMenuItem(1));
+		al3.add(menuItemDao.getMenuItem(2));
+		al3.add(menuItemDao.getMenuItem(4));
+		
+		userCarts.put((long) 0, new Cart(al1, 8.00));
+		userCarts.put((long) 1, new Cart(al2, 9.50));
+		userCarts.put((long) 2, new Cart(al3, 16.50));
 		
 		if(this.userCarts == null) {
 			this.userCarts = new HashMap<Long, Cart>();
@@ -49,7 +62,7 @@ public class CartDaoCollectionImpl implements CartDao {
 		List<MenuItem> cartItems = this.userCarts.get(userId).getMenuItemList();
 		
 		if(cartItems.isEmpty()) {
-			throw new CartEmptyException();
+			throw new CartEmptyException("This cart is empty!");
 		}
 		
 		double total = 0;
@@ -63,12 +76,14 @@ public class CartDaoCollectionImpl implements CartDao {
 	}
 	
 	public void removeCartItem(long userId) {
-		List<MenuItem> cartItems = this.userCarts.get(userId).getMenuItemList();
-		
-		for(MenuItem m : cartItems) {
-			if(userId == m.getId()) {
-				cartItems.remove(m);
-				break;
+		if(this.userCarts.containsKey(userId)) {
+			List<MenuItem> cartItems = this.userCarts.get(userId).getMenuItemList();
+
+			for(MenuItem m : cartItems) {
+				if(userId == m.getId()) {
+					cartItems.remove(m);
+					break;
+				}
 			}
 		}
 	}
